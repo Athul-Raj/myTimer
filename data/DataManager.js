@@ -5,13 +5,17 @@ export default class DataManager {
     this.remoteManager = new RemoteManager();
   }
 
-  async getTasks(): Promise<{
-    title: string,
-    updated_at: string,
-    id: string,
-    start_time: string,
-    end_time: string,
-  }> {
+  async getTasks(): Promise<
+    [
+      {
+        title: string,
+        updated_at: string,
+        id: string,
+        start_time: string,
+        end_time: string,
+      },
+    ],
+  > {
     return await this.remoteManager.getTask();
   }
 }

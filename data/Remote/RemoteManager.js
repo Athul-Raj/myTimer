@@ -40,13 +40,17 @@ export default class RemoteManager {
 
   //region Task
 
-  async getTask(): Promise<{
-    title: string,
-    updated_at: string,
-    id: string,
-    start_time: string,
-    end_time: string,
-  }> {
+  async getTask(): Promise<
+    [
+      {
+        title: string,
+        updated_at: string,
+        id: string,
+        start_time: string,
+        end_time: string,
+      },
+    ],
+  > {
     try {
       const query = `query{
       tasks {
@@ -58,7 +62,9 @@ export default class RemoteManager {
       }
     }`;
       const remoteData = await this.globalPOST(query);
-      return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
+      return RemoteManager.parseRemoteSuccess(
+        JSON.parse(remoteData.tasks || []),
+      );
     } catch (e) {
       throw RemoteManager.parseRemoteError(e);
     }
@@ -115,7 +121,7 @@ export default class RemoteManager {
   // endregion
 
   //region Tag
-  async getTags(): Promise<{ id: string, name: string }> {
+  async getTags(): Promise<{id: string, name: string}> {
     try {
       const query = `query{
       tags {
