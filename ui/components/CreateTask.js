@@ -1,5 +1,11 @@
 import React from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  TextInput,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 
 export default function CreateTask({onDoneClick = () => {}}) {
   const [name, onChangeText] = React.useState(null);
@@ -20,6 +26,9 @@ export default function CreateTask({onDoneClick = () => {}}) {
           onDoneClick(name);
         }}
       />
+      <TouchableHighlight style={styles.cancelButton}>
+        <Button onPress={() => onDoneClick(null)} title={'Cancel'} />
+      </TouchableHighlight>
     </View>
   );
 }
@@ -42,5 +51,13 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderBottomColor: '#d7d2d7',
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  cancelButton: {
+    height: 40,
+    width: 160,
+    borderRadius: 10,
+    backgroundColor: '#d68888',
+    alignSelf: 'center',
+    margin: 10,
   },
 });
