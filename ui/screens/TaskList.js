@@ -2,40 +2,49 @@ import React from 'react';
 
 import {
   ActivityIndicator,
-  Button,
+  FlatList,
   StyleSheet,
-  TextInput,
+  Text,
   View,
 } from 'react-native';
 import DataManager from '../../data/DataManager';
-import ErrorAlert from '../components/ErrorAlert';
+import {CreateTask, ErrorAlert, FooterButton} from '../components';
 
 export default class TaskList extends React.Component {
   constructor(props) {
     super(props);
     this.dataManager = new DataManager();
     this.state = {
-      cityName: '',
-      lookUpButtonDisabled: true,
-      showLoader: false,
+      showLoader: true,
       showError: false,
+
+      showCreateTaskPopUp: false,
     };
   }
+
+  static renderTableCell({item}) {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.title}>{item.title}</Text>
+      </View>
+    );
+  }
+
   componentDidMount() {
     // this.dataManager
     //   .getTasks()
     //   .then((taskList) => {
     //     console.warn('TASKS', taskList);
+    //     this.setState({
+    //       taskList,
+    //       showLoader: false,
+    //     });
     //   })
-    //   .catch(() => {});
+    //   .catch(() => {
+    //     this.isLoaderVisible(false);
+    //   });
+    this.isLoaderVisible(false);
   }
-
-  onChangeText = (text) => {
-    this.setState({
-      cityName: text,
-      lookUpButtonDisabled: text.length <= 0,
-    });
-  };
 
   isLoaderVisible = (showLoader) => {
     this.setState({
@@ -51,42 +60,89 @@ export default class TaskList extends React.Component {
 
   render() {
     const {navigation} = this.props;
-    const {cityName, showLoader, showError, lookUpButtonDisabled} = this.state;
+    const {showLoader, showError, taskList, showCreateTaskPopUp} = this.state;
 
     return (
       <View style={styles.container}>
-        {showLoader && <ActivityIndicator size="large" color="black" />}
+        {showLoader && (
+          <ActivityIndicator style={styles.loader} size="large" color="black" />
+        )}
         {showError && (
           <ErrorAlert
             message={'Please retry some error'}
             hideSelf={() => this.isAlertVisible(false)}
           />
         )}
-
-        <TextInput
-          style={styles.cityTextInput}
-          onChangeText={(text) => this.onChangeText(text)}
-          value={cityName}
-          placeholder={'Enter City Name'}
+        {showCreateTaskPopUp && (
+          <CreateTask
+            onDoneClick={(text) => {
+              console.warn('Here in ', text);
+              this.setState({
+                showCreateTaskPopUp: false,
+              });
+            }}
+          />
+        )}
+        <FlatList
+          data={taskList}
+          renderItem={TaskList.renderTableCell}
+          keyExtractor={(item) => String(item.id)}
         />
-        <Button
-          title="Look Up"
-          // onPress={() => this.onLookUpClicked(navigation, cityName)
-          // }
-          disabled={lookUpButtonDisabled}
-        />
+        {!showCreateTaskPopUp && (
+          <View style={styles.footerContainer}>
+            <FooterButton
+              title="CREATE TASK"
+              onPress={() => {
+                this.setState({
+                  showCreateTaskPopUp: true,
+                });
+              }}
+            />
+            <FooterButton
+              title="TAGS"
+              onPress={() => {
+                console.warn('Tags');
+              }}
+            />
+          </View>
+        )}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  container: {flex: 1},
   cityTextInput: {
     padding: 5,
     height: 40,
     width: '50%',
     borderColor: 'gray',
     borderWidth: 1,
+  },
+  item: {
+    backgroundColor: '#e0d6e2',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+  loader: {
+    left: 0,
+    bottom: 0,
+    top: 0,
+    position: 'absolute',
+    right: 0,
+  },
+  footerContainer: {
+    marginBottom: 15,
+    width: '100%',
+    height: 60,
+    backgroundColor: '#dd6656',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
 });
