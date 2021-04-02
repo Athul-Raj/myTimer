@@ -62,9 +62,10 @@ export default class RemoteManager {
       }
     }`;
       const remoteData = await this.globalPOST(query);
-      return RemoteManager.parseRemoteSuccess(
-        JSON.parse(remoteData.tasks || []),
+      const parsedData = RemoteManager.parseRemoteSuccess(
+        JSON.parse(remoteData),
       );
+      return parsedData.tasks || [];
     } catch (e) {
       throw RemoteManager.parseRemoteError(e);
     }

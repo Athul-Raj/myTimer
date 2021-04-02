@@ -5,7 +5,7 @@ export default class DataManager {
     this.remoteManager = new RemoteManager();
   }
 
-  async getTasks(): Promise<
+  getTasks(): Promise<
     [
       {
         title: string,
@@ -16,6 +16,6 @@ export default class DataManager {
       },
     ],
   > {
-    return await this.remoteManager.getTask();
+    return this.remoteManager.getTask();
   }
 }
