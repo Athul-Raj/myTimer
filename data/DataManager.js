@@ -1,11 +1,14 @@
 import RemoteManager from './Remote/RemoteManager';
+import {TaskParser} from './Remote/Parser';
 
 export default class DataManager {
   constructor() {
     this.remoteManager = new RemoteManager();
+
+    this.taskParser = new TaskParser();
   }
 
-  getTasks(): Promise<
+  async getTasks(): Promise<
     [
       {
         title: string,
@@ -16,7 +19,8 @@ export default class DataManager {
       },
     ],
   > {
-    return this.remoteManager.getTask();
+    const data = await this.remoteManager.getTask();
+    return this.taskParser.fromRemote(data);
   }
 
   createTasks(name: string) {
