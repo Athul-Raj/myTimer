@@ -113,7 +113,6 @@ export default class TaskList extends React.Component<null, TaskListState> {
     this.dataManager
       .getTasks()
       .then((taskList) => {
-        // console.warn('TASKS', taskList);
         this.setState({
           taskList,
         });
