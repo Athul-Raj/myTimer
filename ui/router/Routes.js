@@ -1,4 +1,4 @@
-export const RouteName = {
+export default {
   TaskList: 'TaskList',
   TaskDetails: 'TaskDetails',
   TagList: 'TagList',
