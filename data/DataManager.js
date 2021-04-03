@@ -43,4 +43,8 @@ export default class DataManager {
       new Date(Date.now()).toUTCString(),
     );
   }
+
+  deleteTask(taskId: number) {
+    return this.remoteManager.deleteTask(taskId);
+  }
 }
