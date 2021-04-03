@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 export default class TaskDetails extends React.Component<> {
   constructor(props) {
@@ -21,6 +21,7 @@ export default class TaskDetails extends React.Component<> {
     this.startTime = (route.params && route.params.startTime) || null;
     this.endTime = (route.params && route.params.endTime) || null;
 
+    this.tags = (route.params && route.params.tags) || null;
     this.onStartClick =
       (route.params && route.params.onStartClick) || function () {};
     this.onStopClick =
@@ -55,6 +56,27 @@ export default class TaskDetails extends React.Component<> {
     });
   };
 
+  renderCell = ({item}) => {
+    return <Text style={styles.tagText}>{`#${item.name}`}</Text>;
+  };
+
+  renderTags() {
+    return (
+      <View style={styles.tagView}>
+        {this.tags && this.tags.isEmpty ? (
+          <FlatList
+            data={this.tags}
+            horizontal
+            renderItem={this.renderCell}
+            keyExtractor={(item) => String(item.id)}
+          />
+        ) : (
+          <Text style={styles.tagText}> No Tags Added</Text>
+        )}
+      </View>
+    );
+  }
+
   render() {
     const styleForStartButton = StyleSheet.flatten([
       styles.buttonRound,
@@ -84,6 +106,7 @@ export default class TaskDetails extends React.Component<> {
               : ''}
           </Text>
         </View>
+        {this.renderTags()}
         <View style={styles.buttonView}>
           <TouchableOpacity
             opacity={0}
@@ -165,5 +188,17 @@ const styles = StyleSheet.create({
   },
   footerButton: {
     fontSize: 20,
+  },
+  tagText: {
+    margin: 10,
+    alignSelf: 'center',
+    color: '#589bdd',
+  },
+  tagView: {
+    height: 50,
+    margin: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 10,
   },
 });
