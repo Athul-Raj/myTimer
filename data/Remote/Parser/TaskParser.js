@@ -15,8 +15,14 @@ export class TaskParser {
     return remote.map((item) => {
       return {
         title: item.title,
-        start_time: item.start_time,
-        end_time: item.end_time,
+        start_time:
+          (item.start_time &&
+            new Date(Date.parse(item.start_time)).toLocaleString()) ||
+          null,
+        end_time:
+          (item.end_time &&
+            new Date(Date.parse(item.end_time)).toLocaleString()) ||
+          null,
         id: item.id,
       };
     });
