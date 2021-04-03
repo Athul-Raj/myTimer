@@ -18,4 +18,11 @@ export default class DataManager {
   > {
     return this.remoteManager.getTask();
   }
+
+  createTasks(name: string) {
+    const obj = {
+      title: name,
+    };
+    return this.remoteManager.createTask(obj);
+  }
 }
