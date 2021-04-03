@@ -85,17 +85,51 @@ export default class RemoteManager {
     }
   }
 
-  async updateTask(taskId: number, updateTaskParam: RemoteTask) {
+  async updateTaskTitle(taskId: number, title: string) {
     try {
-      const query = `mutation UpdateTask($title: String, $end_time: timestamptz, $start_time: timestamptz, $id: Int!){
-        update_tasks_by_pk(_set: {title: $title, end_time: $end_time, start_time: $start_time}, pk_columns: {id: $id}){
+      const query = `mutation UpdateTask($title: String, $id: Int!){
+        update_tasks_by_pk(_set: {title: $title}, pk_columns: {id: $id}){
           id
         }
       }`;
-      const remoteData = await this.globalPOST(
-        query,
-        Object.assign(updateTaskParam, {id: taskId}),
-      );
+      const remoteData = await this.globalPOST(query, {
+        id: taskId,
+        title: title,
+      });
+      return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
+    } catch (e) {
+      throw RemoteManager.parseRemoteError(e);
+    }
+  }
+
+  async updateTaskStartTime(taskId: number, startTime: string) {
+    try {
+      const query = `mutation UpdateTask($start_time: timestamptz, $id: Int!){
+        update_tasks_by_pk(_set: {start_time: $start_time}, pk_columns: {id: $id}){
+          id
+        }
+      }`;
+      const remoteData = await this.globalPOST(query, {
+        id: taskId,
+        start_time: startTime,
+      });
+      return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
+    } catch (e) {
+      throw RemoteManager.parseRemoteError(e);
+    }
+  }
+
+  async updateTaskEndTime(taskId: number, endTime: string) {
+    try {
+      const query = `mutation UpdateTask($end_time: timestamptz, $id: Int!){
+        update_tasks_by_pk(_set: {end_time: $end_time}, pk_columns: {id: $id}){
+          id
+        }
+      }`;
+      const remoteData = await this.globalPOST(query, {
+        id: taskId,
+        end_time: endTime,
+      });
       return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
     } catch (e) {
       throw RemoteManager.parseRemoteError(e);

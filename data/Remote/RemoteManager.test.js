@@ -22,12 +22,9 @@ describe.skip('Test: RemoteManager', () => {
     });
   });
 
-  test('updateTask', async () => {
+  test('updateTaskEndTime', async () => {
     const remoteManager = new RemoteManager();
-    await remoteManager.updateTask(1570, {
-      title: 'TEST TASK CREATED',
-      start_time: new Date(Date.now()).toUTCString(),
-    });
+    await remoteManager.updateTaskEndTime(1578, '2021-04-03T09:45:19+00:00');
   });
 
   test('deleteTask', async () => {

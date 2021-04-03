@@ -30,15 +30,17 @@ export default class DataManager {
     return this.remoteManager.createTask(obj);
   }
 
-  startTask(taskId: string) {
-    return this.remoteManager.updateTask(taskId, {
-      start_time: new Date(Date.now()).toUTCString(),
-    });
+  startTask(taskId: number) {
+    return this.remoteManager.updateTaskStartTime(
+      taskId,
+      new Date(Date.now()).toUTCString(),
+    );
   }
 
-  endTask(taskId: string) {
-    return this.remoteManager.updateTask(taskId, {
-      end_time: new Date(Date.now()).toUTCString(),
-    });
+  endTask(taskId: number) {
+    return this.remoteManager.updateTaskEndTime(
+      taskId,
+      new Date(Date.now()).toUTCString(),
+    );
   }
 }
