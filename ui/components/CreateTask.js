@@ -7,7 +7,10 @@ import {
   View,
 } from 'react-native';
 
-export default function CreateTask({onDoneClick = () => {}}) {
+export default function CreateTask({
+  onDoneClick = () => {},
+  cancelClick = () => {},
+}) {
   const [name, onChangeText] = React.useState(null);
   return (
     <View style={styles.container}>
@@ -27,7 +30,7 @@ export default function CreateTask({onDoneClick = () => {}}) {
         }}
       />
       <TouchableHighlight style={styles.cancelButton}>
-        <Button onPress={() => onDoneClick(null)} title={'Cancel'} />
+        <Button onPress={() => cancelClick(null)} title={'Cancel'} />
       </TouchableHighlight>
     </View>
   );
