@@ -1,33 +1,41 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-export default class TaskDetails extends React.Component {
+export default class TaskDetails extends React.Component<> {
   constructor(props) {
     super(props);
-    TaskDetails.parseNavParams(props);
+    this.parseNavParams(props);
   }
 
-  static parseNavParams(props) {
-    // this.onStartClick = props.para
-    // this.onStopClick
-  }
+  parseNavParams = ({route}) => {
+    this.taskId = (route.params && route.params.taskId) || null;
+    this.onStartClick =
+      (route.params && route.params.onStartClick) || function () {};
+    this.onStopClick =
+      (route.params && route.params.onStopClick) || function () {};
+  };
 
   render() {
     const styleForStartButton = StyleSheet.flatten([
       styles.buttonRound,
       {backgroundColor: 'rgb(184,243,112)'},
     ]);
-    const {onStartClick, onStopClick} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styleForStartButton} onPress={onStartClick}>
-            <Text style={{fontSize: 20}}>START</Text>
+          <TouchableOpacity
+            style={styleForStartButton}
+            onPress={() => {
+              this.onStartClick(this.taskId);
+            }}>
+            <Text style={styles.titleName}>START</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonRound}>
-            <Text style={{fontSize: 20}} onPress={onStopClick}>
-              STOP
-            </Text>
+          <TouchableOpacity
+            style={styles.buttonRound}
+            onPress={() => {
+              this.onStopClick(this.taskId);
+            }}>
+            <Text style={styles.titleName}>STOP</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -54,4 +62,5 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
   },
+  titleName: {fontSize: 20},
 });
