@@ -5,12 +5,30 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import DataManager from '../../data/DataManager';
 import {CreateTask, ErrorAlert, FooterButton} from '../components';
+import Routes from '../router/Routes';
 
-export default class TaskList extends React.Component {
+type Task = {
+  title: string,
+  updated_at: string,
+  id: string,
+  start_time: string,
+  end_time: string,
+};
+
+type TaskListState = {
+  showLoader: boolean,
+  showError: boolean,
+  showCreateTaskPopUp: boolean,
+
+  taskList: [Task],
+};
+
+export default class TaskList extends React.Component<null, TaskListState> {
   constructor(props) {
     super(props);
     this.dataManager = new DataManager();
@@ -22,13 +40,54 @@ export default class TaskList extends React.Component {
     };
   }
 
-  static renderTableCell({item}) {
+  renderTableCell = ({item}) => {
+    const taskData: Task = item;
     return (
-      <View style={styles.item}>
-        <Text style={styles.title}>{item.title}</Text>
-      </View>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => {
+          this.navigateToTaskDetail(taskData);
+        }}>
+        <Text style={styles.title}>{taskData.title}</Text>
+        <View style={styles.cellFooter}>
+          <Text style={styles.startTime}>
+            {taskData.start_time
+              ? `START: ${taskData.start_time}`
+              : 'YET TO START'}
+          </Text>
+          <Text style={styles.endTime}>
+            {taskData.end_time ? `END: ${taskData.end_time}` : ''}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
-  }
+  };
+
+  navigateToTaskDetail = (taskData: Task) => {
+    const {navigation} = this.props;
+    navigation.navigate(Routes.TaskDetails, {
+      taskId: taskData.id,
+      taskName: taskData.title,
+      startTime: taskData.start_time,
+      endTime: taskData.end_time,
+      onStartClick: this.startTask,
+      onStopClick: this.stopTask,
+    });
+  };
+
+  startTask = async (taskId: number) => {
+    this.isLoaderVisible(true);
+    await this.dataManager.startTask(taskId);
+    await this.getTasks();
+    this.isLoaderVisible(false);
+  };
+
+  stopTask = async (taskId: number) => {
+    this.isLoaderVisible(true);
+    await this.dataManager.endTask(taskId);
+    await this.getTasks();
+    this.isLoaderVisible(false);
+  };
 
   componentDidMount() {
     this.getTasks();
@@ -108,7 +167,7 @@ export default class TaskList extends React.Component {
           <>
             <FlatList
               data={taskList}
-              renderItem={TaskList.renderTableCell}
+              renderItem={this.renderTableCell}
               keyExtractor={(item) => String(item.id)}
             />
             <View style={styles.footerContainer}>
@@ -143,12 +202,24 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#e0d6e2',
-    padding: 20,
+    padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
   },
   title: {
-    fontSize: 32,
+    height: 32,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  startTime: {
+    bottom: 1,
+    fontSize: 12,
+    color: '#77767a',
+  },
+  endTime: {
+    bottom: 1,
+    fontSize: 12,
+    color: '#77767a',
   },
   loader: {
     left: 0,
@@ -165,5 +236,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+  },
+  cellFooter: {
+    height: 20,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
 });
