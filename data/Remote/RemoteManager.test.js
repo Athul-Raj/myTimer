@@ -22,9 +22,9 @@ describe.skip('Test: RemoteManager', () => {
     });
   });
 
-  test('updateTaskName', async () => {
+  test('updateTask', async () => {
     const remoteManager = new RemoteManager();
-    await remoteManager.updateTaskName(1570, {
+    await remoteManager.updateTask(1570, {
       title: 'TEST TASK CREATED',
       start_time: new Date(Date.now()).toUTCString(),
     });

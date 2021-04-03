@@ -85,7 +85,7 @@ export default class RemoteManager {
     }
   }
 
-  async updateTaskName(taskId: number, updateTaskParam: RemoteTask) {
+  async updateTask(taskId: number, updateTaskParam: RemoteTask) {
     try {
       const query = `mutation UpdateTask($title: String, $end_time: timestamptz, $start_time: timestamptz, $id: Int!){
         update_tasks_by_pk(_set: {title: $title, end_time: $end_time, start_time: $start_time}, pk_columns: {id: $id}){
