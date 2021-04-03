@@ -1,3 +1,4 @@
 import TaskList from './TaskList';
+import TaskDetails from './TaskDetails';
 
-export {TaskList};
+export {TaskList, TaskDetails};
