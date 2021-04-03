@@ -47,4 +47,9 @@ export default class DataManager {
   deleteTask(taskId: number) {
     return this.remoteManager.deleteTask(taskId);
   }
+
+  async getTags(): Promise<[{id: string, name: string}]> {
+    const data = await this.remoteManager.getTags();
+    return data.tags || [];
+  }
 }

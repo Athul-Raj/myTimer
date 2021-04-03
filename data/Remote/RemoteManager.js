@@ -156,7 +156,7 @@ export default class RemoteManager {
   // endregion
 
   //region Tag
-  async getTags(): Promise<{id: string, name: string}> {
+  async getTags(): Promise<[{id: string, name: string}]> {
     try {
       const query = `query{
       tags {
