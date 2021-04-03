@@ -42,6 +42,19 @@ export default class TaskDetails extends React.Component<> {
     }
   };
 
+  start = () => {
+    this.startTime = new Date(Date.now()).toLocaleString();
+    this.setState({
+      isStarted: true,
+    });
+  };
+  end = () => {
+    this.endTime = new Date(Date.now()).toLocaleString();
+    this.setState({
+      isEnded: true,
+    });
+  };
+
   render() {
     const styleForStartButton = StyleSheet.flatten([
       styles.buttonRound,
@@ -77,13 +90,16 @@ export default class TaskDetails extends React.Component<> {
             style={styleForStartButton}
             onPress={() => {
               this.onStartClick(this.taskId);
+              this.start();
             }}>
             <Text style={styles.buttonText}>START</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={!isStarted}
             style={styles.buttonRound}
             onPress={() => {
               this.onStopClick(this.taskId);
+              this.end();
             }}>
             <Text style={styles.buttonText}>STOP</Text>
           </TouchableOpacity>
