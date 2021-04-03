@@ -31,20 +31,31 @@ export default class TaskList extends React.Component {
   }
 
   componentDidMount() {
-    // this.dataManager
-    //   .getTasks()
-    //   .then((taskList) => {
-    //     console.warn('TASKS', taskList);
-    //     this.setState({
-    //       taskList,
-    //       showLoader: false,
-    //     });
-    //   })
-    //   .catch(() => {
-    //     this.isLoaderVisible(false);
-    //   });
-    this.isLoaderVisible(false);
+    this.getTasks();
   }
+
+  createTask = async (title: string) => {
+    this.showCreateTaskPopUp(false);
+    this.isLoaderVisible(true);
+    await this.dataManager.createTasks(title);
+    await this.getTasks();
+    this.isLoaderVisible(false);
+  };
+
+  getTasks = () => {
+    this.dataManager
+      .getTasks()
+      .then((taskList) => {
+        // console.warn('TASKS', taskList);
+        this.setState({
+          taskList,
+        });
+        this.isLoaderVisible(false);
+      })
+      .catch(() => {
+        this.isLoaderVisible(false);
+      });
+  };
 
   isLoaderVisible = (showLoader) => {
     this.setState({
@@ -55,6 +66,12 @@ export default class TaskList extends React.Component {
   isAlertVisible = (showAlert) => {
     this.setState({
       showError: showAlert,
+    });
+  };
+
+  showCreateTaskPopUp = (showPopUp) => {
+    this.setState({
+      showCreateTaskPopUp: showPopUp,
     });
   };
 
@@ -75,36 +92,40 @@ export default class TaskList extends React.Component {
         )}
         {showCreateTaskPopUp && (
           <CreateTask
-            onDoneClick={(text) => {
-              console.warn('Here in ', text);
-              this.setState({
-                showCreateTaskPopUp: false,
-              });
+            onDoneClick={(title) => {
+              if (title && title.length > 0) {
+                this.createTask(title);
+              } else {
+                this.showCreateTaskPopUp(false);
+              }
+            }}
+            cancelClick={() => {
+              this.showCreateTaskPopUp(false);
             }}
           />
         )}
-        <FlatList
-          data={taskList}
-          renderItem={TaskList.renderTableCell}
-          keyExtractor={(item) => String(item.id)}
-        />
         {!showCreateTaskPopUp && (
-          <View style={styles.footerContainer}>
-            <FooterButton
-              title="CREATE TASK"
-              onPress={() => {
-                this.setState({
-                  showCreateTaskPopUp: true,
-                });
-              }}
+          <>
+            <FlatList
+              data={taskList}
+              renderItem={TaskList.renderTableCell}
+              keyExtractor={(item) => String(item.id)}
             />
-            <FooterButton
-              title="TAGS"
-              onPress={() => {
-                console.warn('Tags');
-              }}
-            />
-          </View>
+            <View style={styles.footerContainer}>
+              <FooterButton
+                title="CREATE TASK"
+                onPress={() => {
+                  this.showCreateTaskPopUp(true);
+                }}
+              />
+              <FooterButton
+                title="TAGS"
+                onPress={() => {
+                  console.warn('Tags');
+                }}
+              />
+            </View>
+          </>
         )}
       </View>
     );
