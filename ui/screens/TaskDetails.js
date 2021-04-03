@@ -25,6 +25,8 @@ export default class TaskDetails extends React.Component<> {
       (route.params && route.params.onStartClick) || function () {};
     this.onStopClick =
       (route.params && route.params.onStopClick) || function () {};
+    this.deleteTask =
+      (route.params && route.params.deleteTask) || function () {};
   };
 
   initialSetup = () => {
@@ -46,6 +48,7 @@ export default class TaskDetails extends React.Component<> {
       {backgroundColor: 'rgb(184,243,112)'},
     ]);
     const {isEnded, isStarted} = this.state;
+    const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <View
@@ -85,6 +88,14 @@ export default class TaskDetails extends React.Component<> {
             <Text style={styles.buttonText}>STOP</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={styles.footerView}
+          onPress={() => {
+            this.deleteTask(this.taskId);
+            navigation.goBack();
+          }}>
+          <Text style={styles.footerButton}>Delete Task</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -125,5 +136,18 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderBottomColor: '#d7d2d7',
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  footerView: {
+    position: 'absolute',
+    backgroundColor: '#ef8484',
+    bottom: 15,
+    width: '90%',
+    height: 45,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerButton: {
+    fontSize: 20,
   },
 });

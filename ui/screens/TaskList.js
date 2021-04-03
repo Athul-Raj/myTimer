@@ -72,6 +72,7 @@ export default class TaskList extends React.Component<null, TaskListState> {
       endTime: taskData.end_time,
       onStartClick: this.startTask,
       onStopClick: this.stopTask,
+      deleteTask: this.deleteTask,
     });
   };
 
@@ -85,6 +86,13 @@ export default class TaskList extends React.Component<null, TaskListState> {
   stopTask = async (taskId: number) => {
     this.isLoaderVisible(true);
     await this.dataManager.endTask(taskId);
+    await this.getTasks();
+    this.isLoaderVisible(false);
+  };
+
+  deleteTask = async (taskId: number) => {
+    this.isLoaderVisible(true);
+    await this.dataManager.deleteTask(taskId);
     await this.getTasks();
     this.isLoaderVisible(false);
   };
