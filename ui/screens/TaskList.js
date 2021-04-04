@@ -18,6 +18,7 @@ type Task = {
   id: string,
   start_time: string,
   end_time: string,
+  tagsName: [string],
 };
 
 type TaskListState = {
@@ -67,6 +68,7 @@ export default class TaskList extends React.Component<null, TaskListState> {
     const {navigation} = this.props;
     navigation.navigate(Routes.TaskDetails, {
       taskId: taskData.id,
+      tags: taskData.tagsName,
       taskName: taskData.title,
       startTime: taskData.start_time,
       endTime: taskData.end_time,
