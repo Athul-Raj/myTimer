@@ -16,7 +16,7 @@ export default class DataManager {
         id: string,
         start_time: string,
         end_time: string,
-        tasks: [string],
+        tagsName: [string],
       },
     ],
   > {
@@ -54,8 +54,11 @@ export default class DataManager {
     return (data && data.tags) || [];
   }
 
-  async createTag(tagName: string): Promise<number> {
-    return await this.remoteManager.createTag(tagName);
+  async createTag(tagName: string): Promise<number | null> {
+    const result = await this.remoteManager.createTag(tagName);
+    return (
+      (result && result.insert_tags_one && result.insert_tags_one.id) || null
+    );
   }
 
   attachTagToTask(tagId: number, taskId: number) {
