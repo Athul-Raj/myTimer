@@ -1,5 +1,6 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import TaskTag from '../components/TaskTag';
 
 export default class TaskDetails extends React.Component<> {
   constructor(props) {
@@ -8,6 +9,8 @@ export default class TaskDetails extends React.Component<> {
     this.state = {
       isStarted: false,
       isEnded: false,
+
+      showAddTagPopUp: false,
     };
   }
 
@@ -76,7 +79,13 @@ export default class TaskDetails extends React.Component<> {
             <Text style={styles.tagText}> NO TAGS ADDED</Text>
           )}
         </View>
-        <TouchableOpacity style={styles.tagButtonView}>
+        <TouchableOpacity
+          style={styles.tagButtonView}
+          onPress={() => {
+            this.setState({
+              showAddTagPopUp: true,
+            });
+          }}>
           <Text style={styles.footerButton}>ADD TAG</Text>
         </TouchableOpacity>
         <View style={styles.separator} />
@@ -84,12 +93,25 @@ export default class TaskDetails extends React.Component<> {
     );
   }
 
+  renderTaskAddModal = (isVisible) => {
+    return (
+      <TaskTag
+        isVisible={isVisible}
+        hideSelf={() => {
+          this.setState({
+            showAddTagPopUp: false,
+          });
+        }}
+      />
+    );
+  };
+
   render() {
     const styleForStartButton = StyleSheet.flatten([
       styles.buttonRound,
       {backgroundColor: 'rgb(184,243,112)'},
     ]);
-    const {isEnded, isStarted} = this.state;
+    const {isEnded, isStarted, showAddTagPopUp} = this.state;
     const {navigation} = this.props;
     return (
       <View style={styles.container}>
@@ -114,6 +136,7 @@ export default class TaskDetails extends React.Component<> {
           </Text>
         </View>
         {this.renderTags()}
+        {this.renderTaskAddModal(showAddTagPopUp)}
         <View style={styles.buttonView}>
           <TouchableOpacity
             opacity={0}
