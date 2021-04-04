@@ -147,7 +147,6 @@ export default class TaskList extends React.Component<null, TaskListState> {
   };
 
   render() {
-    const {navigation} = this.props;
     const {showLoader, showError, taskList, showCreateTaskPopUp} = this.state;
 
     return (
@@ -234,6 +233,7 @@ const styles = StyleSheet.create({
     top: 0,
     position: 'absolute',
     right: 0,
+    zIndex: 1,
   },
   footerContainer: {
     marginBottom: 15,
