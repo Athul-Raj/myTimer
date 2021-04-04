@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
 import DataManager from '../../data/DataManager';
 import {CreateTask, ErrorAlert, FooterButton} from '../components';
@@ -39,6 +40,15 @@ export default class TaskList extends React.Component<null, TaskListState> {
 
       showCreateTaskPopUp: false,
     };
+  }
+
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <Button title={'Refresh'} onPress={() => this.getTasks()} />
+      ),
+    });
+    this.getTasks();
   }
 
   renderTableCell = ({item}) => {
@@ -104,10 +114,6 @@ export default class TaskList extends React.Component<null, TaskListState> {
     this.isLoaderVisible(false);
   };
 
-  componentDidMount() {
-    this.getTasks();
-  }
-
   createTask = async (title: string) => {
     this.showCreateTaskPopUp(false);
     this.isLoaderVisible(true);
@@ -117,6 +123,7 @@ export default class TaskList extends React.Component<null, TaskListState> {
   };
 
   getTasks = () => {
+    this.isLoaderVisible(true);
     this.dataManager
       .getTasks()
       .then((taskList) => {
@@ -241,7 +248,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: '100%',
     height: 60,
-    backgroundColor: '#dd6656',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
