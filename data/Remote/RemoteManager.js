@@ -48,6 +48,7 @@ export default class RemoteManager {
         id: string,
         start_time: string,
         end_time: string,
+        tags: [{name: string}],
       },
     ],
   > {
@@ -59,6 +60,9 @@ export default class RemoteManager {
         id
         start_time
         end_time
+        tags {
+          name
+        }
       }
     }`;
       const remoteData = await this.globalPOST(query);

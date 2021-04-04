@@ -10,6 +10,7 @@ export class TaskParser {
       id: string,
       start_time: string,
       end_time: string,
+      tagsName: [string],
     },
   ] {
     return remote.map((item) => {
@@ -24,6 +25,7 @@ export class TaskParser {
             new Date(Date.parse(item.end_time)).toLocaleString()) ||
           null,
         id: item.id,
+        tagsName: (item.tags && item.tags.map((tag) => tag.name)) || [],
       };
     });
   }

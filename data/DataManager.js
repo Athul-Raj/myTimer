@@ -16,6 +16,7 @@ export default class DataManager {
         id: string,
         start_time: string,
         end_time: string,
+        tasks: [string],
       },
     ],
   > {

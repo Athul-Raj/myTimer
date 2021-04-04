@@ -11,7 +11,8 @@ describe.skip('Test: RemoteManager', () => {
 
   test('getTask', async () => {
     const remoteManager = new RemoteManager();
-    await remoteManager.getTask();
+    const res = await remoteManager.getTask();
+    console.log('Res', res);
   });
 
   test('createTask', async () => {
