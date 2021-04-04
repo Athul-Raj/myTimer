@@ -3,7 +3,7 @@ import {RemoteTask} from './Model/RemoteModels';
 export default class RemoteManager {
   static BASE_URL = 'https://test-323.herokuapp.com/v1/graphql/';
   static TOKEN =
-    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1xTFFXMDlNTUxRMUNNZGJpV3cwSyJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtdXNlci1pZCI6Imdvb2dsZS1vYXV0aDJ8MTA3NDU1MTUyOTg0ODMzMzExMzM3In0sImdpdmVuX25hbWUiOiJBdGh1bCIsImZhbWlseV9uYW1lIjoiUmFqIiwibmlja25hbWUiOiJhdGh1bHJhajEiLCJuYW1lIjoiQXRodWwgUmFqIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdnd2tuQVZ1NUNUT0ZPdGhUTV8ydVgxM2Q0ZEVqcnpoQkVFV3FtTmpRPXM5Ni1jIiwibG9jYWxlIjoiZW4tR0IiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNC0wM1QwMjozNjoxNS43ODFaIiwiaXNzIjoiaHR0cHM6Ly90ZXN0LTMyMy51cy5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDc0NTUxNTI5ODQ4MzMzMTEzMzciLCJhdWQiOiJNclVTM3NZTEpUU1paMzJpUjN4OUhwQWJ3MzlWVVJVaCIsImlhdCI6MTYxNzQxNzM3NiwiZXhwIjoxNjE3NDUzMzc2LCJhdF9oYXNoIjoiNlZXN2JpNDQyaUlBNDM5YVRrNXh5QSIsIm5vbmNlIjoiMVNRbV9KUjNEeXVJY2VKbWFjRjBwTjRVMTd4R3k1Ym8ifQ.lAL8BdcakPAhtpTBIqcPrg23Xf2t0JKRv8T5oO1GoruvOFn6VJeksQYjYzaBuquhbLKamHK01mE-izj0IwJTpaZuDPxo1ahPHGAbcP_LKmYg0FVKxe3jeM6FdA5_k6jpMVoMpMrjBBbp7bJMjfsEb1h7KHbB0E5flCVr5VzwLZyI9AP1N1nocajhDr8vOLDiq3KQGFtuxXlMouCuPfsONvTLMKX1BamYWdmZk1ueBkfZEwOncEoxvxMRgnYvPhp0bKNwxPK4Dk-pPQxMCX3qsuDW4Z4e0nj9j5OFN5l1yXt9VavwX-7VTvtOBiRm1PAwwVQW6ZlXEiw1pyWQaOJEYQ';
+    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1xTFFXMDlNTUxRMUNNZGJpV3cwSyJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtdXNlci1pZCI6Imdvb2dsZS1vYXV0aDJ8MTA3NDU1MTUyOTg0ODMzMzExMzM3In0sImdpdmVuX25hbWUiOiJBdGh1bCIsImZhbWlseV9uYW1lIjoiUmFqIiwibmlja25hbWUiOiJhdGh1bHJhajEiLCJuYW1lIjoiQXRodWwgUmFqIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdnd2tuQVZ1NUNUT0ZPdGhUTV8ydVgxM2Q0ZEVqcnpoQkVFV3FtTmpRPXM5Ni1jIiwibG9jYWxlIjoiZW4tR0IiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNC0wNFQwNTo1NjoxNi40NDdaIiwiaXNzIjoiaHR0cHM6Ly90ZXN0LTMyMy51cy5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDc0NTUxNTI5ODQ4MzMzMTEzMzciLCJhdWQiOiJNclVTM3NZTEpUU1paMzJpUjN4OUhwQWJ3MzlWVVJVaCIsImlhdCI6MTYxNzUxNTc3NiwiZXhwIjoxNjE3NTUxNzc2LCJhdF9oYXNoIjoiWE5NV0FIcS00bjJFT1ZkTnZOWFhhUSIsIm5vbmNlIjoid2lMcC1zem5MWDRWVWlYeHBEQW1qaE9LN3h1VHhjbksifQ.ouGKpvCyyJiH7AygI7xdPrEYg7HfP3AIZpJSnpX7swAFuRA7WuBHLufpblhfJcFugHPo4iXXONdgZvKV1nc8QwkRCMGJX06qXVLvERWiiog9hFfoT7rzOTHDdy9hTNwtWOoLfsH6A1vcaV5bnVc17lck2lumReqLAyoCHcF7YRqXkbT2fz-PNW4KSmK2cj2G4_EiSNlIvT-wudS1oEv5OgRQP5NmZUjxKasD0BI4NmjiM2yszwqELCT3Uiht4G8i7qiX6Xz0Mw-zA2Bu3yh8je4qyd3ktJqKjlP2OERySpLOpajAxMK4wbzcPHCTofeZ5tDzsmZOfI2xoYHbI7V63g';
 
   static parseRemoteError(e) {
     //todo
@@ -185,14 +185,14 @@ export default class RemoteManager {
     }
   }
 
-  async updateTag(taskId: number, name: string) {
+  async updateTag(param: {id: number, name: string}) {
     try {
       const query = `mutation UpdateTag($name: String, $id: Int!){
         update_tags_by_pk(_set: {name: $name}, pk_columns: {id: $id}){
           id
         }
       }`;
-      const remoteData = await this.globalPOST(query, {id: taskId, name});
+      const remoteData = await this.globalPOST(query, param);
       return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
     } catch (e) {
       throw RemoteManager.parseRemoteError(e);

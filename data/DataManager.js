@@ -52,4 +52,16 @@ export default class DataManager {
     const data = await this.remoteManager.getTags();
     return data.tags || [];
   }
+
+  updateTagName(tagId: number, name: string) {
+    const param = {
+      id: tagId,
+      name: name,
+    };
+    return this.remoteManager.updateTag(param);
+  }
+
+  deleteTag(tagId: number) {
+    return this.remoteManager.deleteTag(tagId);
+  }
 }
