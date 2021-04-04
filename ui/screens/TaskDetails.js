@@ -102,6 +102,7 @@ export default class TaskDetails extends React.Component<> {
             showAddTagPopUp: false,
           });
         }}
+        taskId={this.taskId}
       />
     );
   };
@@ -115,11 +116,7 @@ export default class TaskDetails extends React.Component<> {
     const {navigation} = this.props;
     return (
       <View style={styles.container}>
-        <View
-          style={{
-            margin: 10,
-            marginTop: 20,
-          }}>
+        <View style={styles.detailsView}>
           <Text style={styles.taskName}>{this.taskName}</Text>
           <View style={styles.separator} />
           <Text style={styles.titleName}>
@@ -173,6 +170,10 @@ export default class TaskDetails extends React.Component<> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  detailsView: {
+    margin: 10,
+    marginTop: 20,
   },
   buttonView: {
     top: 100,
