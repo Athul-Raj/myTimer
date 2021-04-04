@@ -3,7 +3,7 @@ import {RemoteTask} from './Model/RemoteModels';
 export default class RemoteManager {
   static BASE_URL = 'https://test-323.herokuapp.com/v1/graphql/';
   static TOKEN =
-    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1xTFFXMDlNTUxRMUNNZGJpV3cwSyJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtdXNlci1pZCI6Imdvb2dsZS1vYXV0aDJ8MTA3NDU1MTUyOTg0ODMzMzExMzM3In0sImdpdmVuX25hbWUiOiJBdGh1bCIsImZhbWlseV9uYW1lIjoiUmFqIiwibmlja25hbWUiOiJhdGh1bHJhajEiLCJuYW1lIjoiQXRodWwgUmFqIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdnd2tuQVZ1NUNUT0ZPdGhUTV8ydVgxM2Q0ZEVqcnpoQkVFV3FtTmpRPXM5Ni1jIiwibG9jYWxlIjoiZW4tR0IiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNC0wNFQwNTo1NjoxNi40NDdaIiwiaXNzIjoiaHR0cHM6Ly90ZXN0LTMyMy51cy5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDc0NTUxNTI5ODQ4MzMzMTEzMzciLCJhdWQiOiJNclVTM3NZTEpUU1paMzJpUjN4OUhwQWJ3MzlWVVJVaCIsImlhdCI6MTYxNzUxNTc3NiwiZXhwIjoxNjE3NTUxNzc2LCJhdF9oYXNoIjoiWE5NV0FIcS00bjJFT1ZkTnZOWFhhUSIsIm5vbmNlIjoid2lMcC1zem5MWDRWVWlYeHBEQW1qaE9LN3h1VHhjbksifQ.ouGKpvCyyJiH7AygI7xdPrEYg7HfP3AIZpJSnpX7swAFuRA7WuBHLufpblhfJcFugHPo4iXXONdgZvKV1nc8QwkRCMGJX06qXVLvERWiiog9hFfoT7rzOTHDdy9hTNwtWOoLfsH6A1vcaV5bnVc17lck2lumReqLAyoCHcF7YRqXkbT2fz-PNW4KSmK2cj2G4_EiSNlIvT-wudS1oEv5OgRQP5NmZUjxKasD0BI4NmjiM2yszwqELCT3Uiht4G8i7qiX6Xz0Mw-zA2Bu3yh8je4qyd3ktJqKjlP2OERySpLOpajAxMK4wbzcPHCTofeZ5tDzsmZOfI2xoYHbI7V63g';
+    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1xTFFXMDlNTUxRMUNNZGJpV3cwSyJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiXSwieC1oYXN1cmEtdXNlci1pZCI6Imdvb2dsZS1vYXV0aDJ8MTA3NDU1MTUyOTg0ODMzMzExMzM3In0sImdpdmVuX25hbWUiOiJBdGh1bCIsImZhbWlseV9uYW1lIjoiUmFqIiwibmlja25hbWUiOiJhdGh1bHJhajEiLCJuYW1lIjoiQXRodWwgUmFqIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdnd2tuQVZ1NUNUT0ZPdGhUTV8ydVgxM2Q0ZEVqcnpoQkVFV3FtTmpRPXM5Ni1jIiwibG9jYWxlIjoiZW4tR0IiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNC0wNFQxOTozMjoyOS4yMjVaIiwiaXNzIjoiaHR0cHM6Ly90ZXN0LTMyMy51cy5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDc0NTUxNTI5ODQ4MzMzMTEzMzciLCJhdWQiOiJNclVTM3NZTEpUU1paMzJpUjN4OUhwQWJ3MzlWVVJVaCIsImlhdCI6MTYxNzU2NDc0OSwiZXhwIjoxNjE3NjAwNzQ5LCJhdF9oYXNoIjoia1dwVTB3UFVtX3VIXzBWN0tDV1p2dyIsIm5vbmNlIjoiekdUcGhYN1hjZkduMFZoSzlBazdYUEwwZkRudmNjc1AifQ.zIL4lne5zM63cD8SDpe3QHQTnFLSdYJSqk7dOCC3_uCYcGeBuUUaza4ZWM5glMC2eWd1go_1hiIQLT5cq-eNkmInvEy97mdBA5uFjZ0m-ZHMI7OuhIbaTUAX3bwNaI0SJ9tV8Pjp957ZrWBlocnRwJDLH6J5riJIAn5LIBsuWgEEZ4vOOwsrPpXL3D38ZCEGH_CrbAVPhR7RJw8eJP5EZGXCjZop7deFENuk2YWV1IENbUnF561MsHqxFpE8CoKiQOOS12vi0qYFBclVFp8O4-NZnf79CEQyjCz6gCsZ3lKfPhG0SVP1WycXdSnM1kD4qdW6qYxoT1c8AnHF3USybg';
 
   static parseRemoteError(e) {
     //todo
@@ -29,7 +29,7 @@ export default class RemoteManager {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log('Success Remote: ', JSON.stringify(data));
+        console.log('Success Remote: ', JSON.stringify(data));
         return JSON.stringify(data);
       })
       .catch((err) => {
@@ -153,6 +153,56 @@ export default class RemoteManager {
     }
   }
 
+  async deleteTaskTag(taskId: number, tagId: number) {
+    try {
+      const query = `mutation DeleteTaskTag($tag_id: Int!, $task_id: Int!){
+        delete_task_tag_by_pk(tag_id: $tag_id, task_id: $task_id){
+        task_id
+        tag_id
+        }
+      }`;
+      const remoteData = await this.globalPOST(query, {
+        task_id: taskId,
+        tag_id: tagId,
+      });
+      return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
+    } catch (e) {
+      throw RemoteManager.parseRemoteError(e);
+    }
+  }
+
+  async updateTaskTag(taskId: number, tagId: number) {
+    try {
+      const query = `mutation UpdateTaskTag($tag_id: Int!, $task_id: Int!){
+        insert_task_tag_one(object:{tag_id: $tag_id, task_id: $task_id}){
+        task_id
+        tag_id 
+        }
+      }`;
+      const remoteData = await this.globalPOST(query, {
+        task_id: taskId,
+        tag_id: tagId,
+      });
+      return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
+    } catch (e) {
+      throw RemoteManager.parseRemoteError(e);
+    }
+  }
+
+  async getTagsOfTask(taskId): Promise<{task_tag: [{tag_id: string}]}> {
+    try {
+      const query = `query{
+        task_tag(where: {task_id: {_eq : ${taskId}}}){
+          tag_id
+        }
+      }`;
+      const remoteData = await this.globalPOST(query);
+      return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
+    } catch (e) {
+      throw RemoteManager.parseRemoteError(e);
+    }
+  }
+
   // endregion
 
   //region Tag
@@ -171,7 +221,7 @@ export default class RemoteManager {
     }
   }
 
-  async createTag(name: string) {
+  async createTag(name: string): Promise<number> {
     try {
       const query = `mutation InsertTag($name: String){
         insert_tags_one(object: {name: $name}){

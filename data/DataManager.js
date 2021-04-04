@@ -54,15 +54,20 @@ export default class DataManager {
   }
 
   async createTag(tagName: string): Promise<number> {
-    // todo
+    return await this.remoteManager.createTag(tagName);
   }
 
-  attachTagToTask(tagId: number) {
-   //todo
+  attachTagToTask(tagId: number, taskId: number) {
+    return this.remoteManager.updateTaskTag(taskId, tagId);
   }
 
-  removeTagFromTask(tagId: number) {
-    //todo
+  removeTagFromTask(tagId: number, taskId: number) {
+    return this.remoteManager.deleteTaskTag(taskId, tagId);
+  }
+
+  async getTagsOfTicket(taskId: number): Promise<[number]> {
+    const result = await this.remoteManager.getTagsOfTask(taskId);
+    return (result.task_tag && result.task_tag.map((tag) => tag.tag_id)) || [];
   }
 
   updateTagName(tagId: number, name: string) {

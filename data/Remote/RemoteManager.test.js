@@ -2,7 +2,7 @@
 import RemoteManager from './RemoteManager';
 
 require('isomorphic-fetch');
-describe.skip('Test: RemoteManager', () => {
+describe('Test: RemoteManager', () => {
   beforeEach(() => {});
 
   afterEach(() => {
@@ -37,10 +37,26 @@ describe.skip('Test: RemoteManager', () => {
     await remoteManager.getTags();
   });
 
+  test('getTagsOfTasks', async () => {
+    const remoteManager = new RemoteManager();
+    const res = await remoteManager.getTagsOfTask(1583);
+    console.log(res);
+  });
+
   test('createTags', async () => {
     const remoteManager = new RemoteManager();
-    await remoteManager.createTag('TEST TAG');
+    const id = await remoteManager.createTag('TEST TAG1');
+    console.log('Id', id);
   });
+  test('updateTaskTags', async () => {
+    const remoteManager = new RemoteManager();
+    await remoteManager.updateTaskTag(1583, 1019);
+  });
+  test('deleteTaskTags', async () => {
+    const remoteManager = new RemoteManager();
+    await remoteManager.deleteTaskTag(1583, 1019);
+  });
+
   test('updateTag', async () => {
     const remoteManager = new RemoteManager();
     await remoteManager.updateTag('1016', 'TEST TAG 01');
