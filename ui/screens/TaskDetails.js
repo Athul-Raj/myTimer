@@ -62,18 +62,25 @@ export default class TaskDetails extends React.Component<> {
 
   renderTags() {
     return (
-      <View style={styles.tagView}>
-        {this.tags && this.tags.isEmpty ? (
-          <FlatList
-            data={this.tags}
-            horizontal
-            renderItem={this.renderCell}
-            keyExtractor={(item) => String(item.id)}
-          />
-        ) : (
-          <Text style={styles.tagText}> No Tags Added</Text>
-        )}
-      </View>
+      <>
+        <View style={styles.separator} />
+        <View style={styles.tagView}>
+          {this.tags && this.tags.isEmpty ? (
+            <FlatList
+              data={this.tags}
+              horizontal
+              renderItem={this.renderCell}
+              keyExtractor={(item) => String(item.id)}
+            />
+          ) : (
+            <Text style={styles.tagText}> NO TAGS ADDED</Text>
+          )}
+        </View>
+        <TouchableOpacity style={styles.tagButtonView}>
+          <Text style={styles.footerButton}>ADD TAG</Text>
+        </TouchableOpacity>
+        <View style={styles.separator} />
+      </>
     );
   }
 
@@ -133,7 +140,7 @@ export default class TaskDetails extends React.Component<> {
             this.deleteTask(this.taskId);
             navigation.goBack();
           }}>
-          <Text style={styles.footerButton}>Delete Task</Text>
+          <Text style={styles.footerButton}>DELETE</Text>
         </TouchableOpacity>
       </View>
     );
@@ -185,12 +192,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 10,
   },
   footerButton: {
     fontSize: 20,
   },
   tagText: {
-    margin: 10,
+    margin: 15,
     alignSelf: 'center',
     color: '#589bdd',
   },
@@ -199,6 +207,16 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     borderColor: 'black',
+    borderRadius: 10,
+  },
+  tagButtonView: {
+    marginTop: 8,
+    backgroundColor: '#589bdd',
+    height: 45,
+    width: '90%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 10,
   },
 });
