@@ -46,7 +46,7 @@ describe.skip('Test: RemoteManager', () => {
 
   test('createTags', async () => {
     const remoteManager = new RemoteManager();
-    const id = await remoteManager.createTag('TEST TAG1');
+    const id = await remoteManager.createTag('TEST TAG1adsdasda');
     console.log('Id', id);
   });
   test('updateTaskTags', async () => {
