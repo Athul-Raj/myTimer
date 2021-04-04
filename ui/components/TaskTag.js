@@ -137,10 +137,12 @@ export default class TaskTag extends React.Component<
     if (searchText.length > 0) {
       this.isLoaderVisible(true);
       const newTagId = await this.dataManager.createTag(searchText);
-      this.allTags.push({id: newTagId, name: searchText});
+      if (newTagId) {
+        this.allTags.push({id: newTagId, name: searchText});
+        this.tagAdd(newTagId);
+        this.onChangeText(searchText);
+      }
       this.isLoaderVisible(false);
-      this.tagAdd(newTagId);
-      this.onChangeText(searchText);
     }
   };
 
