@@ -2,8 +2,10 @@ import React from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Modal,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -20,6 +22,8 @@ type TagListState = {
   showError: boolean,
   showEditTagPopUp: boolean,
   tags: [Tag],
+  editTagText: string,
+  editTagId: number,
 };
 
 export default class TagList extends React.Component<undefined, TagListState> {
@@ -31,6 +35,8 @@ export default class TagList extends React.Component<undefined, TagListState> {
       showError: false,
       showEditTagPopUp: false,
       tags: [],
+      editTagText: '',
+      editTagId: 0,
     };
   }
 
@@ -53,6 +59,7 @@ export default class TagList extends React.Component<undefined, TagListState> {
   showEditTagPopUp = (showPopUp) => {
     this.setState({
       showEditTagPopUp: showPopUp,
+      editTagText: '',
     });
   };
 
@@ -65,10 +72,12 @@ export default class TagList extends React.Component<undefined, TagListState> {
     this.isLoaderVisible(false);
   };
 
-  editTag = async (tagId: number, updatedName: string) => {
+  editTag = async () => {
+    const {editTagText, editTagId} = this.state;
     this.isLoaderVisible(true);
-    await this.dataManager.updateTagName(tagId, updatedName);
+    await this.dataManager.updateTagName(editTagId, editTagText);
     await this.getTags();
+    this.showEditTagPopUp(false);
     this.isLoaderVisible(false);
   };
 
@@ -79,14 +88,27 @@ export default class TagList extends React.Component<undefined, TagListState> {
     this.isLoaderVisible(false);
   };
 
+  onChangeText = (text) => {
+    this.setState({
+      editTagText: text,
+    });
+  };
+
   renderTableCell = ({item}) => {
     const tag: Tag = item;
     return (
       <View style={styles.item}>
         <Text style={styles.title}>{tag.name}</Text>
-        {/*<TouchableOpacity style={styles.actionButton} onPress={() => {}}>*/}
-        {/*  <Text>EDIT</Text>*/}
-        {/*</TouchableOpacity>*/}
+        <TouchableOpacity
+          style={[styles.actionButton, {marginRight: 10}]}
+          onPress={() => {
+            this.setState({
+              editTagId: tag.id,
+            });
+            this.showEditTagPopUp(true);
+          }}>
+          <Text>EDIT</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() => {
@@ -98,8 +120,34 @@ export default class TagList extends React.Component<undefined, TagListState> {
     );
   };
 
+  renderEditTagPopUp = (isVisible) => {
+    return (
+      <Modal animationType="slide" transparent={true} visible={isVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              onChangeText={this.onChangeText}
+              style={styles.modalText}
+              maxLength={50}
+            />
+            <TouchableOpacity
+              style={styles.buttonDone}
+              onPress={() => this.editTag()}>
+              <Text style={styles.textStyle}>Done</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonCancel}
+              onPress={() => this.showEditTagPopUp(false)}>
+              <Text style={styles.textStyle}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   render() {
-    const {showLoader, showError, tags} = this.state;
+    const {showLoader, showError, tags, showEditTagPopUp} = this.state;
     return (
       <View style={styles.container}>
         {showLoader && (
@@ -111,6 +159,7 @@ export default class TagList extends React.Component<undefined, TagListState> {
             hideSelf={() => this.isAlertVisible(false)}
           />
         )}
+        {this.renderEditTagPopUp(showEditTagPopUp)}
         <FlatList
           data={tags}
           renderItem={this.renderTableCell}
@@ -148,5 +197,53 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     padding: 3,
     borderRadius: 3,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    width: '75%',
+    borderWidth: 1,
+    borderColor: 'black',
+    textAlign: 'center',
+    height: 45,
+  },
+  buttonDone: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#76c7e3',
+  },
+  buttonCancel: {
+    marginTop: 5,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#e38888',
   },
 });
