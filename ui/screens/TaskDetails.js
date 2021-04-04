@@ -1,11 +1,13 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import TaskTag from '../components/TaskTag';
+import DataManager from '../../data/DataManager';
 
 export default class TaskDetails extends React.Component<> {
   constructor(props) {
     super(props);
     this.parseNavParams(props);
+    this.dataManager = new DataManager();
     this.state = {
       isStarted: false,
       isEnded: false,
@@ -31,6 +33,10 @@ export default class TaskDetails extends React.Component<> {
       (route.params && route.params.onStopClick) || function () {};
     this.deleteTask =
       (route.params && route.params.deleteTask) || function () {};
+  };
+
+  refreshTicketDetails = async () => {
+    this.tags = await this.dataManager.getTagNameOfTask(this.taskId);
   };
 
   initialSetup = () => {
@@ -68,12 +74,12 @@ export default class TaskDetails extends React.Component<> {
       <>
         <View style={styles.separator} />
         <View style={styles.tagView}>
-          {this.tags && !this.tags.isEmpty ? (
+          {this.tags && this.tags.length !== 0 ? (
             <FlatList
               data={this.tags}
               horizontal
               renderItem={this.renderCell}
-              keyExtractor={(item) => String(item.id)}
+              keyExtractor={(item) => String(item)}
             />
           ) : (
             <Text style={styles.tagText}> NO TAGS ADDED</Text>
@@ -97,7 +103,8 @@ export default class TaskDetails extends React.Component<> {
     return (
       <TaskTag
         isVisible={isVisible}
-        hideSelf={() => {
+        hideSelf={async () => {
+          await this.refreshTicketDetails();
           this.setState({
             showAddTagPopUp: false,
           });
