@@ -4,18 +4,32 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import DataManager from '../../data/DataManager';
 import {ErrorAlert} from '../components';
 
-export default class TagList extends React.Component {
+type Tag = {
+  id: string,
+  name: string,
+};
+
+type TagListState = {
+  showLoader: boolean,
+  showError: boolean,
+  showEditTagPopUp: boolean,
+  tags: [Tag],
+};
+
+export default class TagList extends React.Component<undefined, TagListState> {
   constructor(props) {
     super(props);
     this.dataManager = new DataManager();
     this.state = {
       showLoader: true,
       showError: false,
+      showEditTagPopUp: false,
       tags: [],
     };
   }
@@ -30,6 +44,18 @@ export default class TagList extends React.Component {
     });
   };
 
+  isAlertVisible = (showAlert) => {
+    this.setState({
+      showError: showAlert,
+    });
+  };
+
+  showEditTagPopUp = (showPopUp) => {
+    this.setState({
+      showEditTagPopUp: showPopUp,
+    });
+  };
+
   getTags = async () => {
     this.isLoaderVisible(true);
     const tags = await this.dataManager.getTags();
@@ -39,11 +65,35 @@ export default class TagList extends React.Component {
     this.isLoaderVisible(false);
   };
 
+  editTag = async (tagId: number, updatedName: string) => {
+    this.isLoaderVisible(true);
+    await this.dataManager.updateTagName(tagId, updatedName);
+    await this.getTags();
+    this.isLoaderVisible(false);
+  };
+
+  deleteTag = async (tagId: number) => {
+    this.isLoaderVisible(true);
+    await this.dataManager.deleteTag(tagId);
+    await this.getTags();
+    this.isLoaderVisible(false);
+  };
+
   renderTableCell = ({item}) => {
-    const taskData: Task = item;
+    const tag: Tag = item;
     return (
       <View style={styles.item}>
-        <Text style={styles.title}>{taskData.name}</Text>
+        <Text style={styles.title}>{tag.name}</Text>
+        {/*<TouchableOpacity style={styles.actionButton} onPress={() => {}}>*/}
+        {/*  <Text>EDIT</Text>*/}
+        {/*</TouchableOpacity>*/}
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => {
+            this.deleteTag(tag.id);
+          }}>
+          <Text>DELETE</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -64,7 +114,7 @@ export default class TagList extends React.Component {
         <FlatList
           data={tags}
           renderItem={this.renderTableCell}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item: Tag) => String(item.id)}
         />
       </View>
     );
@@ -72,16 +122,31 @@ export default class TagList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'red'},
+  container: {flex: 1},
   item: {
     backgroundColor: '#e0d6e2',
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
+    flexDirection: 'row',
   },
   title: {
+    width: '65%',
     height: 25,
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  loader: {
+    left: 0,
+    bottom: 0,
+    top: 0,
+    position: 'absolute',
+    right: 0,
+  },
+  actionButton: {
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 3,
+    borderRadius: 3,
   },
 });
