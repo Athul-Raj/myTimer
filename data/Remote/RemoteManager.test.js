@@ -2,7 +2,7 @@
 import RemoteManager from './RemoteManager';
 
 require('isomorphic-fetch');
-describe('Test: RemoteManager', () => {
+describe.skip('Test: RemoteManager', () => {
   beforeEach(() => {});
 
   afterEach(() => {
