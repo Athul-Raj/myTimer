@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import RouteName from './Routes';
-import {TaskDetails, TaskList} from '../screens';
+import {TaskDetails, TaskList, TagList} from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -12,6 +12,7 @@ export function NavigationStack() {
       <Stack.Navigator>
         <Stack.Screen name={RouteName.TaskList} component={TaskList} />
         <Stack.Screen name={RouteName.TaskDetails} component={TaskDetails} />
+        <Stack.Screen name={RouteName.TagList} component={TagList} />
         {/*<Stack.Screen*/}
         {/*  name={RouteName.WeatherDetailsScreen}*/}
         {/*  component={WeatherDetailsScreen}*/}
