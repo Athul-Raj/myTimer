@@ -16,12 +16,7 @@ import DataManager from '../../data/DataManager';
 type TaskTagProps = {
   isVisible: boolean,
   hideSelf: () => {},
-  ticketTags: [
-    {
-      id: number,
-      name: string,
-    },
-  ],
+  taskId: number,
 };
 
 type TaskTagState = {
@@ -42,14 +37,13 @@ export default class TaskTag extends React.Component<
 > {
   constructor(props) {
     super(props);
-    const taskTagsIds =
-      (this.props.ticketTags && this.props.ticketTags.map((tag) => tag.id)) ||
-      [];
+    this.taskId = this.props.taskId || 0;
+
     this.dataManager = new DataManager();
     this.state = {
       searchText: '',
       listData: [],
-      taskTagsIds: taskTagsIds,
+      taskTagsIds: [],
       showLoader: true,
     };
   }
@@ -61,8 +55,10 @@ export default class TaskTag extends React.Component<
   getAllTasks = async () => {
     this.isLoaderVisible(true);
     this.allTags = await this.dataManager.getTags();
+    const taskTagsIds = await this.dataManager.getTagsOfTicket(this.taskId);
     this.setState({
       listData: this.allTags,
+      taskTagsIds,
     });
     this.isLoaderVisible(false);
   };
@@ -121,7 +117,7 @@ export default class TaskTag extends React.Component<
     this.setState({
       taskTagsIds,
     });
-    this.dataManager.attachTagToTask(tagId);
+    this.dataManager.attachTagToTask(tagId, this.taskId);
   };
 
   tagRemove = (tagId: number) => {
@@ -133,7 +129,7 @@ export default class TaskTag extends React.Component<
     this.setState({
       taskTagsIds,
     });
-    this.dataManager.removeTagFromTask(tagId);
+    this.dataManager.removeTagFromTask(tagId, this.taskId);
   };
 
   createNewTag = async () => {
