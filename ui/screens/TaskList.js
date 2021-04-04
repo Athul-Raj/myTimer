@@ -76,6 +76,11 @@ export default class TaskList extends React.Component<null, TaskListState> {
     });
   };
 
+  navigateToTags = () => {
+    const {navigation} = this.props;
+    navigation.navigate(Routes.TagList);
+  };
+
   startTask = async (taskId: number) => {
     this.isLoaderVisible(true);
     await this.dataManager.startTask(taskId);
@@ -184,12 +189,7 @@ export default class TaskList extends React.Component<null, TaskListState> {
                   this.showCreateTaskPopUp(true);
                 }}
               />
-              <FooterButton
-                title="TAGS"
-                onPress={() => {
-                  console.warn('Tags');
-                }}
-              />
+              <FooterButton title="TAGS" onPress={this.navigateToTags} />
             </View>
           </>
         )}
