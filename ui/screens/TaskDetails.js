@@ -60,7 +60,7 @@ export default class TaskDetails extends React.Component<> {
   };
 
   renderCell = ({item}) => {
-    return <Text style={styles.tagText}>{`#${item.name}`}</Text>;
+    return <Text style={styles.tagText}>{`#${item}`}</Text>;
   };
 
   renderTags() {
@@ -68,7 +68,7 @@ export default class TaskDetails extends React.Component<> {
       <>
         <View style={styles.separator} />
         <View style={styles.tagView}>
-          {this.tags && this.tags.isEmpty ? (
+          {this.tags && !this.tags.isEmpty ? (
             <FlatList
               data={this.tags}
               horizontal
