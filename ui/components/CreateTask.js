@@ -10,6 +10,7 @@ import {
 export default function CreateTask({
   onDoneClick = () => {},
   cancelClick = () => {},
+  doneButtonTitle = null,
 }) {
   const [name, onChangeText] = React.useState(null);
   return (
@@ -24,7 +25,7 @@ export default function CreateTask({
       />
       <View style={styles.separator} />
       <Button
-        title="Create Task"
+        title={doneButtonTitle || 'Create Task'}
         onPress={() => {
           onDoneClick(name);
         }}
