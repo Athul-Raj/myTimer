@@ -74,6 +74,14 @@ export default class DataManager {
     return (result.task_tag && result.task_tag.map((tag) => tag.tag_id)) || [];
   }
 
+  async getTagNameOfTask(taskId: number): Promise<[string]> {
+    const result = await this.remoteManager.getTagNamesOfTask(taskId);
+    return (
+      (result.task_tag && result.task_tag.map((tag) => tag.tag.name || '')) ||
+      []
+    );
+  }
+
   updateTagName(tagId: number, name: string) {
     const param = {
       id: tagId,

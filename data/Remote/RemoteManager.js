@@ -207,6 +207,24 @@ export default class RemoteManager {
     }
   }
 
+  async getTagNamesOfTask(
+    taskId,
+  ): Promise<{task_tag: [{tag: {name: string}}]}> {
+    try {
+      const query = `query{
+        task_tag(where: {task_id: {_eq : ${taskId}}}){
+          tag {
+            name
+          }
+        }
+      }`;
+      const remoteData = await this.globalPOST(query);
+      return RemoteManager.parseRemoteSuccess(JSON.parse(remoteData));
+    } catch (e) {
+      throw RemoteManager.parseRemoteError(e);
+    }
+  }
+
   // endregion
 
   //region Tag
