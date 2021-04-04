@@ -225,7 +225,7 @@ export default class RemoteManager {
     }
   }
 
-  async createTag(name: string): Promise<number> {
+  async createTag(name: string): Promise<{insert_tags_one: {id: number}}> {
     try {
       const query = `mutation InsertTag($name: String){
         insert_tags_one(object: {name: $name}){
