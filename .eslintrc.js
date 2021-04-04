@@ -4,4 +4,7 @@ module.exports = {
   globals: {
     fetch: true,
   },
+  env: {
+    jest: true,
+  },
 };
