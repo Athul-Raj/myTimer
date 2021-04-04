@@ -12,7 +12,7 @@ export default class RemoteManager {
 
   static parseRemoteSuccess(data) {
     //todo
-    return data.data || {};
+    return data.data || null;
   }
 
   globalPOST(query, variables?) {
@@ -65,7 +65,7 @@ export default class RemoteManager {
       const parsedData = RemoteManager.parseRemoteSuccess(
         JSON.parse(remoteData),
       );
-      return parsedData.tasks || [];
+      return (parsedData && parsedData.tasks) || [];
     } catch (e) {
       throw RemoteManager.parseRemoteError(e);
     }
