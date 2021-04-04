@@ -50,7 +50,19 @@ export default class DataManager {
 
   async getTags(): Promise<[{id: string, name: string}]> {
     const data = await this.remoteManager.getTags();
-    return data.tags || [];
+    return (data && data.tags) || [];
+  }
+
+  async createTag(tagName: string): Promise<number> {
+    // todo
+  }
+
+  attachTagToTask(tagId: number) {
+   //todo
+  }
+
+  removeTagFromTask(tagId: number) {
+    //todo
   }
 
   updateTagName(tagId: number, name: string) {
