@@ -7,7 +7,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Button,
 } from 'react-native';
 import DataManager from '../../data/DataManager';
 import {CreateTask, ErrorAlert, FooterButton} from '../components';
@@ -45,7 +44,11 @@ export default class TaskList extends React.Component<null, TaskListState> {
   componentDidMount() {
     this.props.navigation.setOptions({
       headerRight: () => (
-        <Button title={'Refresh'} onPress={() => this.getTasks()} />
+        <TouchableOpacity
+          style={styles.headerRightButtonView}
+          onPress={() => this.getTasks()}>
+          <Text style={styles.refreshText}>REFRESH</Text>
+        </TouchableOpacity>
       ),
     });
     this.getTasks();
@@ -259,4 +262,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
   },
+  headerRightButtonView: {
+    paddingRight: 20,
+    height: 45,
+    justifyContent: 'center',
+  },
+  refreshText: {color: 'blue'},
 });
