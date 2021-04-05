@@ -1,5 +1,13 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import TaskTag from '../components/TaskTag';
 import DataManager from '../../data/DataManager';
 
@@ -13,6 +21,8 @@ export default class TaskDetails extends React.Component<> {
       isEnded: false,
 
       showAddTagPopUp: false,
+      showEditTaskNamePopUp: false,
+      editTaskText: '',
     };
   }
 
@@ -69,6 +79,53 @@ export default class TaskDetails extends React.Component<> {
     return <Text style={styles.tagText}>{`#${item}`}</Text>;
   };
 
+  onChangeText = (text) => {
+    this.setState({
+      editTaskText: text,
+    });
+  };
+
+  editTaskName = () => {
+    const {editTaskText} = this.state;
+    this.dataManager.updateTaskTitle(this.taskId, editTaskText);
+    this.taskName = editTaskText;
+    this.setState({
+      editTaskText: '',
+      showEditTaskNamePopUp: false,
+    });
+  };
+
+  renderEditTagPopUp = (isVisible) => {
+    return (
+      <Modal animationType="slide" transparent={true} visible={isVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              onChangeText={this.onChangeText}
+              style={styles.modalText}
+              maxLength={50}
+            />
+            <TouchableOpacity
+              style={styles.buttonDone}
+              onPress={() => this.editTaskName()}>
+              <Text style={styles.textStyle}>Done</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonCancel}
+              onPress={() =>
+                this.setState({
+                  showEditTaskNamePopUp: false,
+                  editTaskText: '',
+                })
+              }>
+              <Text style={styles.textStyle}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   renderTags() {
     return (
       <>
@@ -119,12 +176,29 @@ export default class TaskDetails extends React.Component<> {
       styles.buttonRound,
       {backgroundColor: 'rgb(184,243,112)'},
     ]);
-    const {isEnded, isStarted, showAddTagPopUp} = this.state;
+    const {
+      isEnded,
+      isStarted,
+      showAddTagPopUp,
+      showEditTaskNamePopUp,
+    } = this.state;
     const {navigation} = this.props;
     return (
       <View style={styles.container}>
+        {this.renderEditTagPopUp(showEditTaskNamePopUp)}
         <View style={styles.detailsView}>
-          <Text style={styles.taskName}>{this.taskName}</Text>
+          <View style={styles.titleView}>
+            <Text style={styles.taskName}>{this.taskName}</Text>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => {
+                this.setState({
+                  showEditTaskNamePopUp: true,
+                });
+              }}>
+              <Text style={styles.editText}>EDIT</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.separator} />
           <Text style={styles.titleName}>
             {isStarted
@@ -203,6 +277,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     padding: 10,
+    width: '80%',
   },
   disabledButton: {
     borderColor: '#999999',
@@ -249,5 +324,69 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    width: '75%',
+    borderWidth: 1,
+    borderColor: 'black',
+    textAlign: 'center',
+    height: 45,
+  },
+  buttonDone: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#76c7e3',
+  },
+  buttonCancel: {
+    marginTop: 5,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#e38888',
+  },
+  editText: {
+    alignSelf: 'center',
+    padding: 8,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  editButton: {
+    alignSelf: 'center',
+    height: 60,
+    width: 60,
+    justifyContent: 'center',
+  },
+  titleView: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

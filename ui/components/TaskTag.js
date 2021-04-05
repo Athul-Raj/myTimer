@@ -237,7 +237,6 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 3,
     margin: 5,
-    backgroundColor: 'green',
   },
   tableStyle: {
     marginTop: 20,
