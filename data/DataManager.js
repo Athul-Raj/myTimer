@@ -45,6 +45,10 @@ export default class DataManager {
     );
   }
 
+  updateTaskTitle(taskId: number, title: string) {
+    return this.remoteManager.updateTaskTitle(taskId, title);
+  }
+
   deleteTask(taskId: number) {
     return this.remoteManager.deleteTask(taskId);
   }
